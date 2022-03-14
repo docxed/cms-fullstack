@@ -4,6 +4,23 @@ import moment from "moment";
 import Link from "next/link";
 
 export default function Post({ post, author, categories, tags, comments }) {
+  const [ccoms, setCcoms] = useState([]);
+  const [mind, setMind] = useState("");
+  const sending = (event) => {
+    if (!mind) return;
+    let old = ccoms;
+    old.push({
+      post: post.id,
+      content: {
+        rendered: mind,
+      },
+      author_name: "guest",
+      date: new Date(),
+    });
+    old.reverse();
+    setCcoms(old);
+    setMind("");
+  };
   return (
     <div>
       <h2>{post.title.rendered}</h2>
@@ -59,24 +76,52 @@ export default function Post({ post, author, categories, tags, comments }) {
       <h2>Send Comment</h2>
       <hr />
       <br />
+
       <div className="row g-2">
         <div className="col-auto"></div>
         <div className="col-6 ms-auto">
           <input
             type="text"
             className="form-control mb-2"
+            value={mind}
             placeholder="comment..."
+            onChange={(e) => setMind(e.target.value)}
             required
           />
         </div>
         <div className="col-auto me-auto">
-          <button className="btn btn-primary" type="button">
-            Send
-          </button>
+          <input
+            type="button"
+            onClick={sending}
+            className="btn btn-primary"
+            value={"Send"}
+          />
         </div>
       </div>
 
       <br />
+      {ccoms.length !== 0 ? (
+        <div>
+          {ccoms.map((value, index) => {
+            return (
+              <div className="content mb-3" key={index}>
+                <div
+                  dangerouslySetInnerHTML={{ __html: value.content.rendered }}
+                ></div>
+                <div
+                  className="text-end text-secondary"
+                  style={{ fontSize: 13 }}
+                >
+                  <b>{value.author_name}</b> <br />
+                  {moment(value.date).format("LL")}{" "}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div></div>
+      )}
 
       {comments.map((value, index) => {
         return (
