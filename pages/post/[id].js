@@ -2,24 +2,41 @@ import React, { useState } from "react";
 import Axios from "axios";
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Post({ post, author, categories, tags, comments }) {
+  const router = useRouter();
   const [ccoms, setCcoms] = useState([]);
   const [mind, setMind] = useState("");
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
   const sending = (event) => {
     if (!mind) return;
-    let old = ccoms;
-    old.push({
+    let body = {
       post: post.id,
-      content: {
-        rendered: mind,
+      parent: 0,
+      author_name: "docxed",
+      author_url: "",
+      date: new Date().toISOString(),
+      date_gmt: new Date().toISOString(),
+      content: mind,
+      link: "",
+      type: "comment",
+      meta: [],
+    };
+    Axios.post("https://fswd-wp.devnss.com/wp-json/wp/v2/comments", body, {
+      headers: {
+        Authorization: "Basic ZnN3ZDpmc3dkLWNtcw==",
       },
-      author_name: "guest",
-      date: new Date(),
-    });
-    old.reverse();
-    setCcoms(old);
-    setMind("");
+    })
+      .then((res) => {
+        setMind("");
+        refreshData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div>
