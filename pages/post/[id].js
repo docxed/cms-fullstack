@@ -156,7 +156,8 @@ export default function Post({ post, author, categories, tags, comments }) {
     </div>
   );
 }
-export async function getStaticProps({ params }) {
+export async function getServerSideProps(context) {
+  const params = { id: context.params.id };
   async function findAuthor(authorId) {
     let res = await Axios.get(
       `https://fswd-wp.devnss.com/wp-json/wp/v2/users/${authorId}`
@@ -218,23 +219,6 @@ export async function getStaticProps({ params }) {
         tags,
         comments,
       },
-    };
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getStaticPaths() {
-  const url = "https://fswd-wp.devnss.com/wp-json/wp/v2/posts";
-  try {
-    const result = await Axios.get(url);
-    const posts = result.data;
-    const paths = posts.map((post) => {
-      return { params: { id: post.id.toString() } };
-    });
-    return {
-      paths,
-      fallback: false, // false or 'blocking'
     };
   } catch (error) {
     console.log(error);
