@@ -37,7 +37,7 @@ export default function Index({ posts }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const url = "https://fswd-wp.devnss.com/wp-json/wp/v2/posts";
   try {
     const result = await Axios.get(url);

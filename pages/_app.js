@@ -7,11 +7,20 @@ import CategoriesContext from "../src/context/CategoriesContext";
 import Categories from "../src/data/categories";
 import TagsContext from "../src/context/TagsContext";
 import Tags from "../src/data/tags";
+import Router from "next/router";
+import "../assets/css/loaders.css";
 
 export default function _app({ Component, pageProps }) {
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle");
   }, []);
+  Router.events.on("routeChangeStart", (url) => {
+    setLoading(true);
+  });
+  Router.events.on("routeChangeComplete", (url) => {
+    setLoading(false);
+  });
   return (
     <>
       <Head>
@@ -19,12 +28,14 @@ export default function _app({ Component, pageProps }) {
         {/* Responsive meta tag */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+
       <CategoriesContext.Provider value={Categories}>
         <TagsContext.Provider value={Tags}>
           <Navbar />
         </TagsContext.Provider>
       </CategoriesContext.Provider>
       <div className="container" style={{ marginTop: 80, marginBottom: 50 }}>
+        {loading && <div id="loader"></div>}
         <Component {...pageProps} />
       </div>
     </>
