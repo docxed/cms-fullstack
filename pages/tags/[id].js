@@ -45,7 +45,8 @@ export default function categories({ thisTags, posts }) {
   );
 }
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps(context) {
+  const params = { id: context.params.id };
   async function findPost(tagId) {
     let res = await Axios.get("https://fswd-wp.devnss.com/wp-json/wp/v2/posts");
     let resultPosts = [];
@@ -68,23 +69,6 @@ export async function getStaticProps({ params }) {
         thisTags,
         posts,
       },
-    };
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getStaticPaths() {
-  const url = "https://fswd-wp.devnss.com/wp-json/wp/v2/tags";
-  try {
-    const result = await Axios.get(url);
-    const tags = result.data;
-    const paths = tags.map((tag) => {
-      return { params: { id: tag.id.toString() } };
-    });
-    return {
-      paths,
-      fallback: false, // false or 'blocking'
     };
   } catch (error) {
     console.log(error);

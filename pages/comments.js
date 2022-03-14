@@ -35,7 +35,7 @@ export default function Comments({ comments }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const url = "https://fswd-wp.devnss.com/wp-json/wp/v2/comments";
   try {
     const result = await Axios.get(url);

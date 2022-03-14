@@ -40,7 +40,8 @@ export default function Authors({ thisUser, posts }) {
   );
 }
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps(context) {
+  const params = { id: context.params.id };
   const url = `https://fswd-wp.devnss.com/wp-json/wp/v2/users/${params.id}`;
   const urlPosts = "https://fswd-wp.devnss.com/wp-json/wp/v2/posts";
   try {
@@ -53,23 +54,6 @@ export async function getStaticProps({ params }) {
         thisUser,
         posts,
       },
-    };
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getStaticPaths() {
-  const url = "https://fswd-wp.devnss.com/wp-json/wp/v2/users";
-  try {
-    const result = await Axios.get(url);
-    const users = result.data;
-    const paths = users.map((user) => {
-      return { params: { id: user.id.toString() } };
-    });
-    return {
-      paths,
-      fallback: false, // false or 'blocking'
     };
   } catch (error) {
     console.log(error);
