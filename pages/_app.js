@@ -8,7 +8,6 @@ import Categories from "../src/data/categories";
 import TagsContext from "../src/context/TagsContext";
 import Tags from "../src/data/tags";
 import Router from "next/router";
-import "../assets/css/loaders.css";
 import Nprogress from "nprogress";
 
 export default function _app({ Component, pageProps }) {
@@ -45,7 +44,6 @@ export default function _app({ Component, pageProps }) {
         </TagsContext.Provider>
       </CategoriesContext.Provider>
       <div className="container" style={{ marginTop: 80, marginBottom: 50 }}>
-        {loading && <div id="loader"></div>}
         <Component {...pageProps} />
       </div>
     </>
