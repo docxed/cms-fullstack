@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import Link from "next/link";
 import CategoriesContext from "../src/context/CategoriesContext";
 import TagsContext from "../src/context/TagsContext";
+import Image from "next/image";
 
 export default function Navbar() {
   const [cats, setCats] = useState([]);
@@ -18,9 +19,15 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <div className="container-fluid">
+        <div className="container">
+          <Image
+            src={"/../public/favicon.ico"}
+            alt="logo"
+            width={24}
+            height={24}
+          />
           <Link href="/">
-            <a className="navbar-brand">CMS System</a>
+            <a className="navbar-brand ps-2">CMS System</a>
           </Link>
           <button
             className="navbar-toggler"

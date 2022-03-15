@@ -6,40 +6,56 @@ import Link from "next/link";
 export default function Authors({ authors, posts }) {
   return (
     <div>
-      <h2>Authors</h2>
+      <h2>All authors ({authors.length})</h2>
       <hr />
       <br />
-      {authors.map((author, index) => {
-        return (
-          <div className="content col-6 mb-3 mx-auto" key={index}>
-            <p>
-              <b>
-                ID: <span className="text-primary">{author.id}</span>
-              </b>
-            </p>
-            <p>Name: {author.name}</p>
-            <div>
-              {author.name}
-              {`'`} post:
-              {posts
-                .filter((raw) => raw.author === author.id)
-                .map((post, index) => {
-                  return (
-                    <Link key={index} href={"/post/" + post.id}>
-                      <a>
-                        <span>
-                          <span className="badge bg-success mx-1">
-                            {post.id}
-                          </span>
-                        </span>
-                      </a>
-                    </Link>
-                  );
-                })}
+      <div className="row">
+        {authors.map((author, index) => {
+          return (
+            <div className="col-lg-6 col-md-6 col-sm-12 mb-3" key={index}>
+              <div className="content h-100">
+                <div>
+                  <Image
+                    className="rounded-circle"
+                    src={author.avatar_urls[`96`]}
+                    alt="logo"
+                    width={96}
+                    height={96}
+                  />
+                </div>
+                <div className="ps-2 mt-2">
+                  <p>
+                    <b>
+                      ID: <span className="text-primary">{author.id}</span>
+                    </b>
+                  </p>
+
+                  <p>Name: {author.name}</p>
+                  <div>
+                    {author.name}
+                    {`'`} post:
+                    {posts
+                      .filter((raw) => raw.author === author.id)
+                      .map((post, index) => {
+                        return (
+                          <Link key={index} href={"/post/" + post.id}>
+                            <a>
+                              <span>
+                                <span className="badge bg-success mx-1">
+                                  {post.id}
+                                </span>
+                              </span>
+                            </a>
+                          </Link>
+                        );
+                      })}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

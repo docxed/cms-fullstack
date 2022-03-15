@@ -3,10 +3,10 @@ import Axios from "axios";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function Post({ post, author, categories, tags, comments }) {
   const router = useRouter();
-  const [ccoms, setCcoms] = useState([]);
   const [mind, setMind] = useState("");
   const refreshData = () => {
     router.replace(router.asPath);
@@ -84,10 +84,13 @@ export default function Post({ post, author, categories, tags, comments }) {
       </p>
       <hr />
       <br />
-      <div
-        className="px-5"
-        dangerouslySetInnerHTML={{ __html: post.content.rendered }}
-      ></div>
+      <div className="col-lg-12 col-md-12 col-sm-12 w-100">
+        <div
+          className="mx-5"
+          dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+        ></div>
+      </div>
+
       <br />
       <br />
       <h2>Send Comment</h2>
@@ -95,8 +98,7 @@ export default function Post({ post, author, categories, tags, comments }) {
       <br />
 
       <div className="row g-2">
-        <div className="col-auto"></div>
-        <div className="col-6 ms-auto">
+        <div className="col-lg-4 col-md-6 col-sm-12 ms-auto">
           <input
             type="text"
             className="form-control mb-2"
@@ -117,35 +119,28 @@ export default function Post({ post, author, categories, tags, comments }) {
       </div>
 
       <br />
-      {ccoms.length !== 0 ? (
-        <div>
-          {ccoms.map((value, index) => {
-            return (
-              <div className="content mb-3" key={index}>
+      {comments.map((value, index) => {
+        return (
+          <div
+            className="content mx-auto col-lg-6 col-md-6 col-sm-12 mb-3"
+            key={index}
+          >
+            <div className="row">
+              <div className="col-lg-11">
                 <div
                   dangerouslySetInnerHTML={{ __html: value.content.rendered }}
                 ></div>
-                <div
-                  className="text-end text-secondary"
-                  style={{ fontSize: 13 }}
-                >
-                  <b>{value.author_name}</b> <br />
-                  {moment(value.date).format("LL")}{" "}
-                </div>
               </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div></div>
-      )}
-
-      {comments.map((value, index) => {
-        return (
-          <div className="content mb-3" key={index}>
-            <div
-              dangerouslySetInnerHTML={{ __html: value.content.rendered }}
-            ></div>
+              <div className="col-lg-1 m-auto">
+                <Image
+                  className="rounded-circle"
+                  src={value.author_avatar_urls[`24`]}
+                  alt="logo"
+                  width={24}
+                  height={24}
+                />
+              </div>
+            </div>
             <div className="text-end text-secondary" style={{ fontSize: 13 }}>
               <b>{value.author_name}</b> <br />
               {moment(value.date).format("LL")}{" "}
@@ -198,7 +193,7 @@ export async function getServerSideProps(context) {
       `https://fswd-wp.devnss.com/wp-json/wp/v2/comments`
     );
     let resultComments = res.data.filter((raw) => raw.post === postId);
-    return resultComments;
+    return resultComments.sort();
   }
 
   try {

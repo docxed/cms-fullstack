@@ -6,31 +6,38 @@ import Link from "next/link";
 export default function Comments({ comments }) {
   return (
     <>
-      <h2>Comments Page</h2>
+      <h2>All post comments ({comments.length})</h2>
       <hr />
       <br />
-      {comments.map((comment, index) => {
-        return (
-          <div className="content mb-3 col-6 mx-auto" key={index}>
-            <div
-              dangerouslySetInnerHTML={{ __html: comment.content.rendered }}
-            ></div>
-            <div className="text-end text-secondary" style={{ fontSize: 13 }}>
-              <b>{comment.author_name}</b> <br />
-              {moment(comment.date).format("LL")}{" "}
+      <div className="row">
+        {comments.map((comment, index) => {
+          return (
+            <div className="col-lg-4 col-md-6 col-sm-12 mb-3" key={index}>
+              <div className="content h-100">
+                <div
+                  dangerouslySetInnerHTML={{ __html: comment.content.rendered }}
+                ></div>
+                <div
+                  className="text-end text-secondary"
+                  style={{ fontSize: 13 }}
+                >
+                  <b>{comment.author_name}</b> <br />
+                  {moment(comment.date).format("LL")}{" "}
+                </div>
+                <p className="text-center mt-3">
+                  <Link href={"/post/" + comment.post}>
+                    <a>
+                      <button className="btn btn-outline-primary">
+                        Go to post
+                      </button>
+                    </a>
+                  </Link>
+                </p>
+              </div>
             </div>
-            <p className="text-center mt-3">
-              <Link href={"/post/" + comment.post}>
-                <a>
-                  <button className="btn btn-outline-primary">
-                    Go to post
-                  </button>
-                </a>
-              </Link>
-            </p>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </>
   );
 }

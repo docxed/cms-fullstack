@@ -8,34 +8,40 @@ export default function Authors({ thisUser, posts }) {
     <div>
       <h2>
         {thisUser.name}
-        {`'`} post
+        {`'`} post ({posts.filter((raw) => raw.author === thisUser.id).length})
       </h2>
       <hr />
       <br />
-      {posts
-        .filter((raw) => raw.author === thisUser.id)
-        .map((post, index) => {
-          return (
-            <div className="content col-6 mb-3 mx-auto" key={index}>
-              <p className="">
-                <b>
-                  Post No: <span className="text-primary">{post.id}</span>
-                </b>
-              </p>
-              <p className="h5">{post.title.rendered}</p>
-              <p className="text-secondary">{moment(post.date).format("LL")}</p>
-              <p className="text-end">
-                <Link href={"/post/" + post.id}>
-                  <a>
-                    <button className="btn btn-outline-primary">
-                      Read more
-                    </button>
-                  </a>
-                </Link>
-              </p>
-            </div>
-          );
-        })}
+      <div className="row">
+        {posts
+          .filter((raw) => raw.author === thisUser.id)
+          .map((post, index) => {
+            return (
+              <div className="col-lg-6 col-md-6 col-sm-12 mb-3" key={index}>
+                <div className="content h-100">
+                  <p>
+                    <b>
+                      Post No: <span className="text-primary">{post.id}</span>
+                    </b>
+                  </p>
+                  <p className="h5">{post.title.rendered}</p>
+                  <p className="text-secondary">
+                    {moment(post.date).format("LL")}
+                  </p>
+                  <p className="text-end">
+                    <Link href={"/post/" + post.id}>
+                      <a>
+                        <button className="btn btn-outline-primary">
+                          Read more
+                        </button>
+                      </a>
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }
