@@ -20,7 +20,7 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div className="container">
           <Link href="/">
-            <a className="navbar-brand ps-2">CMS System</a>
+            <a className="navbar-brand">CMS System</a>
           </Link>
           <button
             className="navbar-toggler"
